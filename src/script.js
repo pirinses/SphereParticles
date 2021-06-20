@@ -33,7 +33,7 @@ for ( let i = 0; i < 1500; i ++ ) {
 
     vertices.push( vertex.x, vertex.y, vertex.z );
 
-    vertex.multiplyScalar( Math.random() * 0.1 + 1 );
+    vertex.multiplyScalar( Math.random() * 0.005 + 1 );
 
 
 }
@@ -109,7 +109,7 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(85, sizes.width / sizes.height, 0.1, 300)
 camera.position.x = 0
 camera.position.y = 0
 camera.position.z = 2
