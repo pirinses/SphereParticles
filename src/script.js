@@ -5,6 +5,7 @@ import * as dat from 'dat.gui'
 
 // Debug
 const gui = new dat.GUI()
+dat.GUI.toggleHide();
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
