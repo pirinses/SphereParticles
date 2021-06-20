@@ -13,16 +13,62 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 // Objects
-const geometry = new THREE.TorusGeometry( .7, .2, 16, 100 );
+const distance = THREE.Math.randFloatSpread(100)
+
+const geometry = new THREE.BufferGeometry();
+
+
+//vector particles
+const vertices = [];
+
+const vertex = new THREE.Vector3();
+
+for ( let i = 0; i < 1500; i ++ ) {
+
+    vertex.x = Math.random() * 2 - 1;
+    vertex.y = Math.random() * 2 - 1;
+    vertex.z = Math.random() * 2 - 1;
+    vertex.normalize();
+
+    vertices.push( vertex.x, vertex.y, vertex.z );
+
+    vertex.multiplyScalar( Math.random() * 0.1 + 1 );
+
+
+}
+
+
+//dot particles
+const particlesCnt = 10000;
+const posArray = new Float32Array(particlesCnt * 3);
+
+for(let i = 0; i < particlesCnt * 2; i++){
+    posArray[i] = Math.random() - 1
+
+}
+
+geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+
+
 
 // Materials
 
-const material = new THREE.MeshBasicMaterial()
-material.color = new THREE.Color(0xff0000)
+const material = new THREE.PointsMaterial()
+material.color = new THREE.Color(0xffff00)
+material.size = 1.3
+material.sizeAttenuation = false
+material.alphaTest = 0.5
+material.morphTargets = true
+
+const particlesM = new THREE.PointsMaterial();
+particlesM.size = 5
+particlesM.color = "red"
 
 // Mesh
-const sphere = new THREE.Mesh(geometry,material)
+const sphere = new THREE.Points(geometry,material)
 scene.add(sphere)
+
+const particle = new THREE.Mesh()
 
 // Lights
 
@@ -31,6 +77,9 @@ pointLight.position.x = 2
 pointLight.position.y = 3
 pointLight.position.z = 4
 scene.add(pointLight)
+
+
+
 
 /**
  * Sizes
@@ -73,6 +122,8 @@ scene.add(camera)
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
+    clearAlpha:1,
+    color:0x0,
     canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height)
@@ -90,7 +141,7 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    sphere.rotation.y = .5 * elapsedTime
+    sphere.rotation.y = .3 * elapsedTime
 
     // Update Orbital Controls
     // controls.update()
@@ -103,3 +154,7 @@ const tick = () =>
 }
 
 tick()
+
+
+// Orbital controls
+const control = new OrbitControls(camera, renderer.domElement)
